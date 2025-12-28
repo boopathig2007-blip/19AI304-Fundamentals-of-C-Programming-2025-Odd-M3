@@ -28,7 +28,43 @@ To formulate a C program to convert a decimal number into its binary equivalent 
 ### Step 8: 
    Stop
 # Program:
+#include <stdio.h>
+
+int main() {
+    int decimal, n;
+    int binary[32];  
+    int i = 0;
+
+    printf("Enter a decimal number: ");
+    scanf("%d", &decimal);
+
+    n = decimal;
+
+    if (n == 0) {
+        printf("Binary: 0\n");
+        return 0;
+    }
+
+    while (n > 0) {
+        binary[i] = n % 2;
+        n = n / 2;           
+        i++;
+    }
+
+    
+    printf("Binary of %d: ", decimal);
+    for (i = i - 1; i >= 0; i--) {
+        printf("%d", binary[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+
 # Output:
+Enter a decimal number: 25
+Binary of 25: 11001
+
 # Result: 
 Thus, the program was implemented and executed successfully, and the required output was obtained.
 
@@ -67,7 +103,70 @@ Thus, the program was implemented and executed successfully, and the required ou
 ### Step 9: 
   Stop
 # Program:
+#include <stdio.h>
+
+int main() {
+    int matrix[10][10];
+    int rows, cols;
+    int i, j, k;
+    int saddleFound = 0;
+
+    printf("Enter number of rows: ");
+    scanf("%d", &rows);
+    printf("Enter number of columns: ");
+    scanf("%d", &cols);
+
+    
+    printf("Enter the elements of the matrix:\n");
+    for (i = 0; i < rows; i++) {
+        for (j = 0; j < cols; j++) {
+            scanf("%d", &matrix[i][j]);
+        }
+    }
+
+    for (i = 0; i < rows; i++) {
+    
+        int rowMin = matrix[i][0];
+        int colIndex = 0;
+        for (j = 1; j < cols; j++) {
+            if (matrix[i][j] < rowMin) {
+                rowMin = matrix[i][j];
+                colIndex = j;
+            }
+        }
+
+        
+        int isSaddle = 1;
+        for (k = 0; k < rows; k++) {
+            if (matrix[k][colIndex] > rowMin) {
+                isSaddle = 0;
+                break;
+            }
+        }
+
+        if (isSaddle) {
+            printf("Saddle point found: Value = %d at position (Row %d, Column %d)\n",
+                   rowMin, i + 1, colIndex + 1);
+            saddleFound = 1;
+        }
+    }
+
+    if (!saddleFound) {
+        printf("No saddle point found in the matrix.\n");
+    }
+
+    return 0;
+}
+
 # Output:
+Enter number of rows: 3
+Enter number of columns: 3
+Enter the elements of the matrix:
+11 12 13
+21 22 23
+31 32 33
+No saddle point found in the matrix.
+
 # Result: 
 Thus, the program was implemented and executed successfully, and the required output was obtained.
 
@@ -101,7 +200,37 @@ Thus, the program was implemented and executed successfully, and the required ou
 ### Step 10: 
   Stop
 # Program:
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char str[100], reversed[100];
+    int length, i, j = 0;
+
+    printf("Enter a string: ");
+    fgets(str, sizeof(str), stdin);  
+    length = strlen(str);
+    if (str[length - 1] == '\n') {
+        str[length - 1] = '\0';
+        length--;
+    }
+
+
+    for (i = length - 1; i >= 0; i--) {
+        reversed[j++] = str[i];
+    }
+    reversed[j] = '\0';  
+
+  
+    printf("Reversed string: %s\n", reversed);
+
+    return 0;
+}
+
 # Output:
+Enter a string: Hello World
+Reversed string: dlroW olleH
+
 # Result: 
 Thus, the program was implemented and executed successfully, and the required output was obtained.
 
@@ -135,7 +264,52 @@ Thus, the program was implemented and executed successfully, and the required ou
 ### Step 8:
   Stop
 # Program:
+#include <stdio.h>
+#include <string.h>
+
+
+int main() {
+    char str[1000];
+    int freq[MAX] = {0};  
+    int i;
+
+    printf("Enter a string: ");
+    fgets(str, sizeof(str), stdin);
+
+ 
+    int length = strlen(str);
+    if (str[length - 1] == '\n') {
+        str[length - 1] = '\0';
+    }
+
+ 
+    for (i = 0; str[i] != '\0'; i++) {
+        freq[(unsigned char)str[i]]++;  
+    }
+
+    
+    printf("\nCharacter frequencies:\n");
+    for (i = 0; i < MAX; i++) {
+        if (freq[i] != 0) {
+            printf("'%c' : %d\n", i, freq[i]);
+        }
+    }
+
+    return 0;
+}
+
 # Output:
+Enter a string: hello world
+Character frequencies:
+'h' : 1
+'e' : 1
+'l' : 3
+'o' : 2
+' ' : 1
+'w' : 1
+'r' : 1
+'d' : 1
+
 # Result: 
 Thus, the program was implemented and executed successfully, and the required output was obtained.
 
@@ -169,7 +343,62 @@ Thus, the program was implemented and executed successfully, and the required ou
 ### Step 8: 
   Stop
 # Program:
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAX 1000
+
+int main() {
+    char str[MAX], temp[MAX][50];
+    int wordCount = 0, i, j;
+    int isDuplicate;
+
+    printf("Enter a string: ");
+    fgets(str, sizeof(str), stdin);
+
+    int length = strlen(str);
+    if (str[length - 1] == '\n') {
+        str[length - 1] = '\0';
+    }
+   char *word = strtok(str, " ");
+    while (word != NULL) {
+        
+        isDuplicate = 0;
+        for (i = 0; i < wordCount; i++) {
+            if (strcmp(temp[i], word) == 0) {
+                isDuplicate = 1;
+                break;
+            }
+        }
+     if (!isDuplicate) {
+            strcpy(temp[wordCount], word);
+            wordCount++;
+        }
+
+        word = strtok(NULL, " ");
+    }
+
+    
+    printf("\nString with unique words:\n");
+    for (i = 0; i < wordCount; i++) {
+        printf("%s", temp[i]);
+        if (i != wordCount - 1) {
+            printf(" ");
+        }
+    }
+    printf("\n");
+
+    return 0;
+}
+
+
+
 # Output:
+Enter a string: hello world hello programming world
+String with unique words:
+hello world programming
+
 # Result: 
 Thus, the program was implemented and executed successfully, and the required output was obtained.
 
